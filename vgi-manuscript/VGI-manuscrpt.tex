@@ -271,9 +271,9 @@ As described before, this solving process is iterative, for each solution filed,
 
 \section{Result and Discussion}
 
-\subsection{1D results}
+\subsection{1D Results}
 We did a 1D case with and without force. In figure \ref{feq0} and figure \ref{feq1}, the red circle is dynamic  $\tau$ result, the blue star is static $\tau$ result, and black line is Galerkin without stabilization. Top left figure is Pe = 125, top right is Pe = 12.5, bottom left is Pe = 1.25 and bottom right is Pe = 0.125.
-\subsubsection{No force}
+\subsubsection{No Force}
 We first verify our approach using a $1D$ problem with analytical solution. It is a simple convection diffusion problem with both Dirichlet boundary condition $u^{h} = 0$ at $x=0$ and$u^{h} = 1$ at $x=1$, the convection speed is $-1$. We change diffusivity parameter $\kappa$ to get cell Peclet number range from 125, 12.5, 1.25 and 0.125. $c_2$ is 1 for the first two case, and $c_2$ is 2 for the last two.
 The static $\tau$ is the following setup:
 \begin{equation}
@@ -292,7 +292,7 @@ When we plot the Galerkin solution, static (Asymptotic) $\tau$ solution and dyna
     \caption{1D Result with f=0 for Pe = 125, 12.5, 1.25,0.125 with Dynamic $\tau$ (red circle), Static $\tau$(blue star) and Galerkin(black line) setup}
   	\label{feq0}
 \end{figure}
-\subsubsection{With nonzero force}
+\subsubsection{With Nonzero Force}
 This same comparison can be seen for the case with a force presented figure\ref{feq1}. This case we have a constant forcing term, and two Dirichlet condition both 0 at the two boundaries. Dynamic procedure also shows a good result when force is presented. It stabilize the result without too much diffusion and for high Peclet number, the result is very close to static asymptotic $\tau$. While for low Peclet number, it converge back to Galerkin solution
 \begin{figure}[h!]
 	\begin{center}
@@ -304,7 +304,7 @@ This same comparison can be seen for the case with a force presented figure\ref{
 \end{figure}
 \subsection{2D results}
 The $2D$ problem I am evaluating has Dirichlet inlet boundary condition $u^{h} = 0$ at $x=0$ and $y=0$ The other two outlet boundary are 0 diffusive flux, the convection speed is $a = [1,1]$ and we change kappa to get a cell Peclet number 125, 12.5, 1.25 and 0.125.\\
-The static asymptotic $\tau$ is calculated through a geometry $g_ij$ constant. The definition of $g_ij$ is related to the actual coordinate and Area of the element vertex.
+The static asymptotic $\tau$ is calculated through a geometry $g_{ij}$ constant. The definition of $g_{ij}$ is related to the actual coordinate and Area of the element vertex.
 \begin{equation}
     \begin{aligned}
        \tau_1  &= a*g_ij*a' \\
@@ -314,7 +314,7 @@ The static asymptotic $\tau$ is calculated through a geometry $g_ij$ constant. T
 \end{equation}
 We show the result solved with both square mesh and a structured triangular mesh. For both of them, iteration start with the Galerkin solution. In figure \ref{SQ} and figure \ref{Tri}, the first row is for Pe=125, second row is Pe=12.5, third is Pe = 1.25 and last row is Pe = 0.125. For first and second row, $c_2$ = 1, while for last two rows, $c_2$ = 2. The first column is dynamic $\tau$ result, the second column is static $\tau$, the third one is Galerkin solution and the last column is a diagonal line plot at -45 degree of the first three column. For the last column, red circle is dynamic $\tau$ result, blue stat is static $\tau$, and black line is Galerkin solution. I plot every other data point for dynamic and static $\tau$ solution.
 \subsubsection{Square Mesh}
-We first solve the problem use a square mesh. The setup of problem and $c_1$ at boundaries can be seen as figure \ref{SQmesh}. For the two Dirichlet inlet, since the convection direction is at 45 degree angle, for each patch, we will exactly satisfy the least square fit at the -45 degree boundary node. For example, when we compute c1 for node 1, we will make sure the least square exactly fit the boundary value at node 2 as that is the most aligned direction. And for the actual boundary node2, $c_1$ is set to be 0. For the natural outlet boundaries, we will let $c_1$ calculated as a normal inertial node with less information(less node around a boundary). We also cut off at 0, which means if a calculated $c_1$ value is negative, we set it to be 0. We can do an absolute $c_1$ calculation, and in some case, it helps to get a more stable result, but in preventing of huge $c_1$ value, we decide to do the cutoff. And when we check, we did not get a lot of negative $c_1$s.
+We first solve the problem use a square mesh. The setup of problem and $c_1$ at boundaries can be seen as figure \ref{SQmesh}. For the two Dirichlet inlet, since the convection direction is at 45 degree angle, for each patch, we will exactly satisfy the least square fit at the -45 degree boundary node. For example, when we compute c1 for node 1, we will make sure the least square exactly fit the boundary value at node 2 as that is the most aligned direction. And for the actual boundary node 2, $c_1$ is set to be 0. For the natural outlet boundaries, we will let $c_1$ calculated as a normal interior node with less information(less node around a boundary). We also cut off at 0, which means if a calculated $c_1$ value is negative, we set it to be 0. We can do an absolute $c_1$ calculation, and in some case, it helps to get a more stable result, but in preventing of huge $c_1$ value, we decide to do the cutoff. And when we check, we did not get a lot of negative $c_1$s.\\
 \begin{figure}[h!]
 	\begin{center}
 	\includegraphics[width=0.65\textwidth, clip]{./figure/SQmeshGrid.eps}
@@ -323,7 +323,7 @@ We first solve the problem use a square mesh. The setup of problem and $c_1$ at 
     \caption{c1 setup near boundary for square mesh}
   	\label{SQmesh}
 \end{figure}
-In figure \ref{SQ}, for the first row with Pe = 125, our dynamic procedure can eliminate most of the oscillations. However, right after the drop, there is still a deep oscillation and a small one after this. The $u^h$ value is not different from the Galerkin solution, which means the local $c_1$ is very small and we do not have sufficient stabilization. The static case have a deeper oscillation, but with no secondary small oscillation. There is also a kink near the boundary for both static and dynamic $\tau$ case, but the kink is more obvious for the dynamic procedure.\\
+In figure \ref{SQ}, for the first row with Pe = 125, our dynamic procedure can eliminate most of the oscillations. However, right after the drop, there is still a deep oscillation and a small one after this. The $u^h$ value is not different from the Galerkin solution, which means the local $c_1$ is very small and we do not have sufficient stabilization. The static case have a deeper oscillation, but with no secondary small oscillation. There is also a kink near the boundary for both static and dynamic $\tau$ case, but the kink is more obvious for the dynamic procedure result.\\
 For the case with Pe = 12.5, the Galerkin solution itself does not show a lot oscillation. But for both dynamic and static $\tau$, they still cannot fully resolve the kink near the boundary. This does not show up in the line plot as the line cut through -45 degree plane. \\
 The last two rows show a good match with the Galerkin solution, thus the dynamic procedure will give back the Galerkin solution when the mesh can fully resolve the solution space.
 \begin{figure}[h!]
@@ -350,7 +350,7 @@ For the resolved case Pe = 1.25 and Pe = 0.125, our dynamic procedure gives good
 
 \subsection{Convergence Criteria and Error Estimation}
 \label{error}
-We stop the iteration if the iteration meets one of the two conditions. The first is norm of $u'^{h}$, which means if $\frac{norm(u'^{h}_{new}-u'^{h})}{norm(u'^{h}_{start})}$ is less than the tolerance set. The other one is if the coefficients of u is stable, which indicates if $\frac{||u^{h}_{iter+1}-u^{h}_{iter}||}{||u^{h}_{iter}||}$ is smaller than a set tolerance.  See figure \ref{Iteration} for the iteration convergence plot of the first criteria with Pe=125 case.See figure \ref{Iteration2} for the iteration convergence plot of the second criteria with Pe=125 case. Both of the value we watch for is decreasing fast during the first three iterations, and we stop the process if one of them is less than $10^{-3}$\\
+We stop the iteration if the iteration meets one of the two conditions. The first is norm of $u'^{h}$, which means if $\frac{norm(u'^{h}_{new}-u'^{h})}{norm(u'^{h}_{start})}$ is less than the tolerance set. The other one is if the coefficients of u is stable, which indicates if $\frac{||u^{h}_{iter+1}-u^{h}_{iter}||}{||u^{h}_{iter}||}$ is smaller than a set tolerance. See figure \ref{Iteration} for the iteration convergence plot of the first criteria with Pe=125 case. See figure \ref{Iteration2} for the iteration convergence plot of the second criteria with Pe=125 case. Both of the value we watch for is decreasing fast during the first three iterations, and we stop the process if one of them is less than $10^{-3}$\\
 
 \begin{figure}[h!]
 	\begin{center}
